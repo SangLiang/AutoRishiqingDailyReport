@@ -18,7 +18,6 @@ var loginData = require('./config');
     await page.goto(INDEX_URL);
     var res = await page.waitForNavigation({ waitUntil: "networkidle"});
 
-    await timeout(1500);
     var title  = await page.title();
     console.log("进入页面: "+title+" URL: "+INDEX_URL);
 
@@ -28,27 +27,39 @@ var loginData = require('./config');
     
     var password = await page.$('[placeholder=输入密码]')
     await password.click()
+    console.log(loginData.password);
     await password.type(loginData.password, {delay: 20})
     
+    // var loginBtn = await page.$('div.mainContainer div#loginView.container.showing div.btn');
+    // await loginBtn.click();
     
-    var loginBtn = await page.$('div.mainContainer div#loginView.container.showing div.btn');
-    await loginBtn.click();
+    await page.waitForSelector('div.mainContainer div#loginView.container.showing div.btn');
+    await page.click('div.mainContainer div#loginView.container.showing div.btn');
 
     console.log("登录...");
+
+    await timeout(2000);
 
     await page.goto("https://www.rishiqing.com/app/doc/846502");
     var response = await page.waitForNavigation({ waitUntil: "networkidle"});
 
-    var addBtn = await page.$(".new-doc-item");
+    // var addBtn = await page.$(".new-doc-item");
+    // await addBtn.click();
+      
+    await page.waitForSelector(".new-doc-item");
+    await page.click(".new-doc-item");
     
-    await addBtn.click();
     
-    var dailyText = "今日完成：打酱油";
+    var dailyText = "今日完成：vip，分润模块。明日计划：vip,分润模块";
     await page.type('.editArea',dailyText,{delay:80});
     console.log("开始写日志："+dailyText);
 
-    var addBtn = await page.$(".collect-name");
-    await addBtn.click();
+    // var addBtn = await page.$(".collect-name");
+    // await addBtn.click();
+
+    await page.waitForSelector(".collect-name");
+    await page.click(".collect-name");
+
     console.log("任务结束");
     await timeout(2000);
     
